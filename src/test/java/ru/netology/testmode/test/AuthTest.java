@@ -23,9 +23,6 @@ class AuthTest {
     @DisplayName("Should successfully login with active registered user")
     void shouldSuccessfulLoginIfRegisteredActiveUser() {
         var registeredUser = getRegisteredUser("active");
-        // TODO: добавить логику теста, в рамках которого будет выполнена попытка входа в личный кабинет с учётными
-        //  данными зарегистрированного активного пользователя, для заполнения полей формы используйте
-        //  пользователя registeredUser
         $("[name=\"login\"]").val(registeredUser.getLogin());
         $("[name=\"password\"]").val(registeredUser.getPassword());
         $(".button").click();
@@ -56,8 +53,8 @@ class AuthTest {
     @DisplayName("Should get error message if login with wrong login")
     void shouldGetErrorIfWrongLogin() {
         var registeredUser = getRegisteredUser("active");
-        var wrongLogin = DataGenerator.Registration.getUser("active");
-        $("[name=\"login\"]").val(wrongLogin.getLogin());
+        var wrongLogin = DataGenerator.getRandomLogin();
+        $("[name=\"login\"]").val(wrongLogin);
         $("[name=\"password\"]").val(registeredUser.getPassword());
         $(".button").click();
         $(withText("Неверно указан логин или пароль")).shouldBe(Condition.visible);
@@ -67,12 +64,9 @@ class AuthTest {
     @DisplayName("Should get error message if login with wrong password")
     void shouldGetErrorIfWrongPassword() {
         var registeredUser = getRegisteredUser("active");
-        var wrongPassword = DataGenerator.Registration.getUser("active");
-        // TODO: добавить логику теста в рамках которого будет выполнена попытка входа в личный кабинет с неверным
-        //  паролем, для заполнения поля формы "Логин" используйте пользователя registeredUser,
-        //  "Пароль" - переменную wrongPassword
+        var wrongPassword = DataGenerator.getRandomPassword();
         $("[name=\"login\"]").val(registeredUser.getLogin());
-        $("[name=\"password\"]").val(wrongPassword.getPassword());
+        $("[name=\"password\"]").val(wrongPassword);
         $(".button").click();
         $(withText("Неверно указан логин или пароль")).shouldBe(Condition.visible);
     }
